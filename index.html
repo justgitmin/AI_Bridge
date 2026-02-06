@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 대학 AI 브릿지 교과 통합 포털</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF7;
+            color: #2D3748;
+        }
+        /* View Switching Animation */
+        .view-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .view-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Common Styles from Original Files */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            height: 350px;
+        }
+        .step-card { transition: all 0.3s ease; }
+        .major-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .major-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Global Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="App.navigate('home')">
+                    <span class="text-xl font-bold text-gray-900">🎓 AI Bridge 2026</span>
+                </div>
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <button onclick="App.navigate('standard')" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50 transition-colors">표준 모델</button>
+                    <button onclick="App.navigate('cloud')" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition-colors">클라우드형</button>
+                    <button onclick="App.navigate('agent')" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-purple-600 hover:bg-gray-50 transition-colors">에이전트형</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- VIEW 1: HOME (Landing Page) -->
+    <div id="view-home" class="view-section active flex-grow">
+        <header class="bg-white py-20 px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-gray-600 uppercase bg-gray-100 rounded-full">2026 College AI Bridge Course</div>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">대학 AI 브릿지 교과 설계안</h1>
+                <p class="text-xl text-gray-600 mb-10 leading-relaxed">
+                    교육 목표와 환경에 맞춰 설계된 3가지 커리큘럼 시나리오를 제안합니다.<br>
+                    <span class="text-base text-gray-500">아래 카드 또는 상단 메뉴를 통해 각 모델의 상세 내용을 확인하세요.</span>
+                </p>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 py-8 pb-24">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Standard Card -->
+                <div onclick="App.navigate('standard')" class="bg-white rounded-2xl p-8 border border-gray-200 card-hover cursor-pointer relative overflow-hidden group h-full flex flex-col">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-indigo-500"></div>
+                    <div class="flex-grow">
+                        <div class="w-14 h-14 rounded-xl bg-indigo-50 flex items-center justify-center text-3xl mb-6">🎓</div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">표준 리터러시 모델</h2>
+                        <p class="text-sm text-indigo-500 font-bold uppercase mb-4">Standard Literacy</p>
+                        <p class="text-gray-600 break-keep">"발견-연결-창작"의 3단계를 통해 전공 무관 누구나 AI 기초 활용 능력을 배양하는 표준 과정입니다.</p>
+                    </div>
+                    <div class="mt-8 font-bold text-indigo-600 flex items-center">모델 상세 보기 →</div>
+                </div>
+
+                <!-- Cloud Card -->
+                <div onclick="App.navigate('cloud')" class="bg-white rounded-2xl p-8 border border-gray-200 card-hover cursor-pointer relative overflow-hidden group h-full flex flex-col">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
+                    <div class="flex-grow">
+                        <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center text-3xl mb-6">☁️</div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600">클라우드 연계 모델</h2>
+                        <p class="text-sm text-blue-500 font-bold uppercase mb-4">Powered by Cloud</p>
+                        <p class="text-gray-600 break-keep">AWS 및 Naver Cloud 등 실제 기업 인프라 환경 위에서 동작하는 AI 도구를 활용하여 실무 감각을 익힙니다.</p>
+                    </div>
+                    <div class="mt-8 font-bold text-blue-600 flex items-center">모델 상세 보기 →</div>
+                </div>
+
+                <!-- Agent Card -->
+                <div onclick="App.navigate('agent')" class="bg-white rounded-2xl p-8 border border-gray-200 card-hover cursor-pointer relative overflow-hidden group h-full flex flex-col">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-purple-500"></div>
+                    <div class="flex-grow">
+                        <div class="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center text-3xl mb-6">🤖</div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-purple-600">에이전트 래핑 모델</h2>
+                        <p class="text-sm text-purple-500 font-bold uppercase mb-4">Agent Wrapping</p>
+                        <p class="text-gray-600 break-keep">나만의 '전공 AI 비서(Agent)'를 직접 설계하고 튜닝하여, 전공 지식을 AI에 주입하는 심화 과정입니다.</p>
+                    </div>
+                    <div class="mt-8 font-bold text-purple-600 flex items-center">모델 상세 보기 →</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW 2: STANDARD MODEL (Content from College_AI_Bridge_Course_Interactive.html) -->
+    <div id="view-standard" class="view-section flex-grow">
+        <!-- Hero Section -->
+        <header class="bg-white border-b border-gray-200 py-8 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-600 uppercase bg-indigo-50 rounded-full">
+                    AI Literacy for Everyone
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                    대학 AI 브릿지 교과 설계안 (표준)
+                </h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                    "전공을 더 잘하기 위한 AI 비서 만들기"<br>
+                    <span class="text-sm text-gray-500">어렵지 않게, 내 전공 공부를 도와주는 AI 친구를 만들어보세요.</span>
+                </p>
+
+                <!-- 3-Step Philosophy -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8 text-left md:text-center">
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 step-card">
+                        <div class="text-2xl mb-2">👀</div>
+                        <h3 class="font-bold text-blue-900">1. 발견 (Discover)</h3>
+                        <p class="text-sm text-blue-700">"내 숙제가 이렇게 쉬워진다고?"<br>AI의 유용성을 직접 체감합니다.</p>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 step-card">
+                        <div class="text-2xl mb-2">🔗</div>
+                        <h3 class="font-bold text-indigo-900">2. 연결 (Connect)</h3>
+                        <p class="text-sm text-indigo-700">내 전공 지식으로<br>AI에게 일을 시키는 법을 배웁니다.</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 step-card">
+                        <div class="text-2xl mb-2">🛠️</div>
+                        <h3 class="font-bold text-purple-900">3. 창작 (Create)</h3>
+                        <p class="text-sm text-purple-700">나만의 AI 도구로<br>실제 전공 결과물을 제작합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="py-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900">계열별 커리큘럼 탐색</h2>
+                    <p class="text-gray-600 mt-2">아래 계열 카드를 클릭하여 각 전공에 최적화된 AI 브릿지 교과 모델을 확인하세요.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-4 xl:col-span-3">
+                        <div class="grid grid-cols-2 lg:grid-cols-1 gap-4" id="std-majorGrid"></div>
+                    </div>
+                    <!-- Right Column -->
+                    <div class="lg:col-span-8 xl:col-span-9">
+                        <div id="std-detailContainer" class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden min-h-[600px] transition-all duration-300">
+                            <div id="std-header" class="bg-gray-50 p-6 border-b border-gray-100 flex justify-between items-start">
+                                <div>
+                                    <span id="std-badge" class="inline-block px-2 py-1 text-xs font-bold text-white rounded mb-2 bg-gray-500">계열 선택</span>
+                                    <h2 id="std-title" class="text-2xl font-bold text-gray-800">왼쪽에서 계열을 선택해주세요</h2>
+                                    <p id="std-subtitle" class="text-gray-600 mt-1">각 계열별 맞춤형 AI 활용 방안을 볼 수 있습니다.</p>
+                                </div>
+                                <div class="text-4xl" id="std-icon">👆</div>
+                            </div>
+                            <div class="p-6">
+                                <div id="std-interestBox" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 rounded-r-lg">
+                                    <h4 class="text-sm font-bold text-yellow-800 uppercase mb-1">💡 흥미 포인트 (Why?)</h4>
+                                    <p id="std-interestText" class="text-gray-800 italic">"</p>
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div id="std-activitiesSection" class="hidden">
+                                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center"><span class="mr-2">📝</span> 주요 활동 (Activity)</h3>
+                                        <div class="space-y-6 relative border-l-2 border-gray-200 ml-3 pl-6 pb-2" id="std-activityList"></div>
+                                        <div class="mt-8">
+                                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center"><span class="mr-2">🧰</span> 활용 도구 (Tools)</h3>
+                                            <div class="flex flex-wrap gap-2" id="std-toolList"></div>
+                                        </div>
+                                    </div>
+                                    <div id="std-chartSection" class="hidden flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                        <h3 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">역량 개발 포커스</h3>
+                                        <div class="chart-container"><canvas id="std-skillRadarChart"></canvas></div>
+                                        <p class="text-xs text-center text-gray-400 mt-4 max-w-xs">* 이 교과를 통해 중점적으로 개발되는 AI 리터러시 역량의 분포입니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professor's Guide (Standard) -->
+                <div class="mt-16 border-t border-gray-200 pt-10">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <span class="bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">Tip</span>
+                        교수자를 위한 운영 가이드
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-red-500 text-xl mb-3">🙅‍♂️</div>
+                            <h3 class="font-bold text-gray-800 mb-2">실패 경험 공유</h3>
+                            <p class="text-gray-600 text-sm">AI가 엉뚱한 대답(Hallucination)을 해도 당황하지 마세요. "이게 AI의 한계입니다. 그래서 전공자인 여러분의 검토가 필요합니다"라고 강조하여 학생의 효능감을 높여주세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-green-500 text-xl mb-3">📝</div>
+                            <h3 class="font-bold text-gray-800 mb-2">템플릿 제공</h3>
+                            <p class="text-gray-600 text-sm">막막해하는 학생들을 위해 초반에는 빈칸 채우기 식의 '마법의 질문 양식(프롬프트 템플릿)'을 제공하여 진입 장벽을 낮춰주세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-blue-500 text-xl mb-3">💬</div>
+                            <h3 class="font-bold text-gray-800 mb-2">과정 중심 평가</h3>
+                            <p class="text-gray-600 text-sm">결과물의 완벽함보다는 "어떻게 AI와 소통하며 문제를 해결했는가"를 보여주는 '대화 로그(Chat Log)'를 평가의 핵심으로 삼으세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW 3: CLOUD MODEL (Content from College_AI_Bridge_Course_Interactive_with_Cloud.html) -->
+    <div id="view-cloud" class="view-section flex-grow">
+        <!-- Hero Section -->
+        <header class="bg-white border-b border-gray-200 py-8 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="inline-flex items-center px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-600 uppercase bg-indigo-50 rounded-full gap-2">
+                    <span>AI Literacy for Everyone</span>
+                    <span class="w-1 h-1 bg-indigo-600 rounded-full"></span>
+                    <span class="text-indigo-400">Powered by Cloud</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                    대학 AI 브릿지 교과 설계안 (클라우드)
+                </h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                    "전공을 더 잘하기 위한 AI 비서 만들기"<br>
+                    <span class="text-sm text-gray-500">
+                        AWS 및 네이버클라우드 기반의 안정적인 환경에서,<br>내 전공 공부를 도와주는 AI 친구를 만들어보세요.
+                    </span>
+                </p>
+
+                <!-- 3-Step Philosophy -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8 text-left md:text-center">
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 step-card">
+                        <div class="text-2xl mb-2">👀</div>
+                        <h3 class="font-bold text-blue-900">1. 발견 (Discover)</h3>
+                        <p class="text-sm text-blue-700">"내 숙제가 이렇게 쉬워진다고?"<br>AI의 유용성을 직접 체감합니다.</p>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 step-card">
+                        <div class="text-2xl mb-2">🔗</div>
+                        <h3 class="font-bold text-indigo-900">2. 연결 (Connect)</h3>
+                        <p class="text-sm text-indigo-700">내 전공 지식으로<br>AI에게 일을 시키는 법을 배웁니다.</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 step-card">
+                        <div class="text-2xl mb-2">🛠️</div>
+                        <h3 class="font-bold text-purple-900">3. 창작 (Create)</h3>
+                        <p class="text-sm text-purple-700">나만의 AI 도구로<br>실제 전공 결과물을 제작합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="py-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900">계열별 커리큘럼 탐색</h2>
+                    <p class="text-gray-600 mt-2">아래 계열 카드를 클릭하여 각 전공에 최적화된 AI 브릿지 교과 모델을 확인하세요.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-4 xl:col-span-3">
+                        <div class="grid grid-cols-2 lg:grid-cols-1 gap-4" id="cld-majorGrid"></div>
+                    </div>
+                    <!-- Right Column -->
+                    <div class="lg:col-span-8 xl:col-span-9">
+                        <div id="cld-detailContainer" class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden min-h-[600px] transition-all duration-300">
+                            <div id="cld-header" class="bg-gray-50 p-6 border-b border-gray-100 flex justify-between items-start">
+                                <div>
+                                    <span id="cld-badge" class="inline-block px-2 py-1 text-xs font-bold text-white rounded mb-2 bg-gray-500">계열 선택</span>
+                                    <h2 id="cld-title" class="text-2xl font-bold text-gray-800">왼쪽에서 계열을 선택해주세요</h2>
+                                    <p id="cld-subtitle" class="text-gray-600 mt-1">각 계열별 맞춤형 AI 활용 방안을 볼 수 있습니다.</p>
+                                </div>
+                                <div class="text-4xl" id="cld-icon">👆</div>
+                            </div>
+                            <div class="p-6">
+                                <div id="cld-interestBox" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded-r-lg">
+                                    <h4 class="text-sm font-bold text-yellow-800 uppercase mb-1">💡 흥미 포인트 (Why?)</h4>
+                                    <p id="cld-interestText" class="text-gray-800 italic">"</p>
+                                </div>
+                                <div id="cld-cloudBox" class="hidden bg-gray-50 border border-gray-200 p-3 mb-8 rounded-lg flex items-center gap-3">
+                                    <div class="text-xl text-gray-400">☁️</div>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-gray-500 uppercase">활용 환경 (Infrastructure)</h4>
+                                        <p id="cld-cloudText" class="text-xs text-gray-600"></p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div id="cld-activitiesSection" class="hidden">
+                                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center"><span class="mr-2">📝</span> 주요 활동 (Activity)</h3>
+                                        <div class="space-y-6 relative border-l-2 border-gray-200 ml-3 pl-6 pb-2" id="cld-activityList"></div>
+                                        <div class="mt-8">
+                                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center"><span class="mr-2">🧰</span> 활용 도구 (Tool Stack)</h3>
+                                            <div class="flex flex-wrap gap-2" id="cld-toolList"></div>
+                                        </div>
+                                    </div>
+                                    <div id="cld-chartSection" class="hidden flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                        <h3 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">역량 개발 포커스</h3>
+                                        <div class="chart-container"><canvas id="cld-skillRadarChart"></canvas></div>
+                                        <p class="text-xs text-center text-gray-400 mt-4 max-w-xs">* 이 교과를 통해 중점적으로 개발되는 AI 활용 역량의 분포입니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professor's Guide (Cloud) -->
+                <div class="mt-16 border-t border-gray-200 pt-10">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <span class="bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">Tip</span>
+                        교수자를 위한 운영 가이드
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-red-500 text-xl mb-3">🙅‍♂️</div>
+                            <h3 class="font-bold text-gray-800 mb-2">실패 경험 공유</h3>
+                            <p class="text-gray-600 text-sm">AI의 환각(Hallucination)을 <strong>"전공자의 검증이 필요한 이유"</strong>로 교육하여 학생의 효능감을 높여주세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-green-500 text-xl mb-3">📝</div>
+                            <h3 class="font-bold text-gray-800 mb-2">템플릿 제공</h3>
+                            <p class="text-gray-600 text-sm">초반에는 빈칸 채우기 식의 <strong>'프롬프트 템플릿'</strong>을 제공하여 진입 장벽을 낮춰주세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-blue-500 text-xl mb-3">💬</div>
+                            <h3 class="font-bold text-gray-800 mb-2">과정 중심 평가</h3>
+                            <p class="text-gray-600 text-sm">결과물보다 <strong>"어떻게 AI와 상호작용 했는가"</strong>(Log)를 평가의 핵심으로 삼으세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-gray-400 text-xl mb-3">☁️</div>
+                            <h3 class="font-bold text-gray-800 mb-2">인프라 지원</h3>
+                            <p class="text-gray-600 text-sm">실습 환경 구성을 위해 AWS Educate 및 네이버클라우드 아카데믹 크레딧을 활용하면 좋습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW 4: AGENT MODEL (Content from College_AI_Bridge_Course_Interactive_with_Agent.html) -->
+    <div id="view-agent" class="view-section flex-grow">
+        <!-- Hero Section -->
+        <header class="bg-white border-b border-gray-200 py-8 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="inline-flex items-center px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-600 uppercase bg-indigo-50 rounded-full gap-2">
+                    <span>AI Agent Platform</span>
+                    <span class="w-1 h-1 bg-indigo-600 rounded-full"></span>
+                    <span class="text-indigo-500">Custom Agents</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                    대학 AI 브릿지 교과 설계안 (에이전트)
+                </h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                    "AI 플랫폼 위에 나만의 전공 에이전트를 만들다"<br>
+                    <span class="text-sm text-gray-500">
+                        <strong>AI 에이전트 플랫폼</strong>을 도구로 활용하여,<br>
+                        코딩 없이 내 전공 업무를 수행하는 <strong>'나만의 AI 에이전트'</strong>를 직접 설계하고 활용합니다.
+                    </span>
+                </p>
+
+                <!-- 3-Step Philosophy -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8 text-left md:text-center">
+                    <div class="bg-gray-100 p-4 rounded-xl border border-gray-200 step-card">
+                        <div class="text-2xl mb-2">🎓</div>
+                        <h3 class="font-bold text-gray-900">1. 플랫폼 기초 (Basic)</h3>
+                        <p class="text-sm text-gray-600">AI 에이전트 플랫폼의<br>기본 사용법과 멀티 모달 기능을 익힙니다.</p>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 step-card">
+                        <div class="text-2xl mb-2">🤖</div>
+                        <h3 class="font-bold text-indigo-900">2. 에이전트 설계 (Design)</h3>
+                        <p class="text-sm text-indigo-700">내 전공 지식을 주입하여<br>특화된 AI 에이전트를 기획합니다.</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 step-card">
+                        <div class="text-2xl mb-2">🚀</div>
+                        <h3 class="font-bold text-purple-900">3. 실무 활용 (Deploy)</h3>
+                        <p class="text-sm text-purple-700">완성된 에이전트를<br>실제 과제와 프로젝트에 투입합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="py-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900">단계별 커리큘럼 (Platform → Major)</h2>
+                    <p class="text-gray-600 mt-2">
+                        <strong class="text-indigo-600">[공통 기초]</strong>에서 플랫폼 사용법을 익힌 후, <strong class="text-indigo-600">[전공 심화]</strong>에서 나만의 에이전트를 만들어보세요.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-4 xl:col-span-3">
+                        <div class="grid grid-cols-2 lg:grid-cols-1 gap-4" id="agt-majorGrid"></div>
+                    </div>
+                    <!-- Right Column -->
+                    <div class="lg:col-span-8 xl:col-span-9">
+                        <div id="agt-detailContainer" class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden min-h-[600px] transition-all duration-300">
+                            <div id="agt-header" class="bg-gray-50 p-6 border-b border-gray-100 flex justify-between items-start">
+                                <div>
+                                    <span id="agt-badge" class="inline-block px-2 py-1 text-xs font-bold text-white rounded mb-2 bg-gray-500">계열 선택</span>
+                                    <h2 id="agt-title" class="text-2xl font-bold text-gray-800">왼쪽에서 계열을 선택해주세요</h2>
+                                    <p id="agt-subtitle" class="text-gray-600 mt-1">공통 기초부터 전공별 심화 에이전트 제작 과정까지 확인 가능합니다.</p>
+                                </div>
+                                <div class="text-4xl" id="agt-icon">👆</div>
+                            </div>
+                            <div class="p-6">
+                                <div id="agt-interestBox" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 rounded-r-lg">
+                                    <h4 class="text-sm font-bold text-yellow-800 uppercase mb-1">💡 학습 목표 (Goal)</h4>
+                                    <p id="agt-interestText" class="text-gray-800 italic">"</p>
+                                </div>
+                                <div id="agt-wrappingBox" class="hidden bg-indigo-50 border border-indigo-200 p-4 mb-8 rounded-lg flex items-start gap-3">
+                                    <div class="text-2xl mt-1">🎁</div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-indigo-800 uppercase mb-1">에이전트 래핑 (Agent Wrapping)</h4>
+                                        <p id="agt-wrappingText" class="text-sm text-gray-700 leading-relaxed"></p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div id="agt-activitiesSection" class="hidden">
+                                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center"><span class="mr-2">📝</span> 커리큘럼 로드맵</h3>
+                                        <div class="space-y-6 relative border-l-2 border-gray-200 ml-3 pl-6 pb-2" id="agt-activityList"></div>
+                                        <div class="mt-8">
+                                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center"><span class="mr-2">🧰</span> 플랫폼 & 도구</h3>
+                                            <div class="flex flex-wrap gap-2" id="agt-toolList"></div>
+                                        </div>
+                                    </div>
+                                    <div id="agt-chartSection" class="hidden flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                        <h3 class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">역량 개발 포커스</h3>
+                                        <div class="chart-container"><canvas id="agt-skillRadarChart"></canvas></div>
+                                        <p class="text-xs text-center text-gray-400 mt-4 max-w-xs">* 플랫폼 활용 능력(기초) vs 전공 응용 능력(심화) 분포</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professor's Guide (Agent) -->
+                <div class="mt-16 border-t border-gray-200 pt-10">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <span class="bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">Tip</span>
+                        교수자를 위한 운영 가이드
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-gray-800 text-xl mb-3">🖥️</div>
+                            <h3 class="font-bold text-gray-800 mb-2">플랫폼 통일</h3>
+                            <p class="text-gray-600 text-sm">초반 혼란을 줄이기 위해 하나의 강력한 <strong>AI 에이전트 플랫폼</strong>으로 도구를 통일하여 교육하세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-indigo-500 text-xl mb-3">🤖</div>
+                            <h3 class="font-bold text-gray-800 mb-2">1인 1에이전트</h3>
+                            <p class="text-gray-600 text-sm">모든 학생이 학기 말에 <strong>'자신의 전공 비서 에이전트'</strong> 하나를 완성하여 보유하도록 지도하세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-green-500 text-xl mb-3">🧩</div>
+                            <h3 class="font-bold text-gray-800 mb-2">프롬프트 엔지니어링</h3>
+                            <p class="text-gray-600 text-sm">에이전트의 성능은 <strong>'지시문(System Prompt)'</strong>에 달려있음을 강조하고, 전공 지식을 논리적으로 서술하는 법을 가르치세요.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                            <div class="text-blue-500 text-xl mb-3">📈</div>
+                            <h3 class="font-bold text-gray-800 mb-2">공유와 피드백</h3>
+                            <p class="text-gray-600 text-sm">각자 만든 에이전트 링크를 공유하여 서로 사용해보고, 성능을 개선(Fine-tuning)하는 과정을 평가하세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-8 text-center text-xs mt-auto">
+        <p class="mb-2 font-bold text-gray-300">&copy; 2026 AI Bridge Course Design Team. All Rights Reserved.</p>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-gray-500">
+            <span>(주)으뜸정보기술</span>
+            <span class="hidden md:inline">|</span>
+            <span>송민 이사</span>
+            <span class="hidden md:inline">|</span>
+            <span>sm@tbit.co.kr</span>
+            <span class="hidden md:inline">|</span>
+            <span>010-8485-7809</span>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script>
+        // --- DATA REPOSITORIES (EXACT COPIES FROM ORIGINAL FILES) ---
+        const DB = {
+            // 1. STANDARD DATA
+            std: {
+                'eng': { id:'eng', name:'공학 계열', trackName:'퓨처 테크 리포터 (Future Tech Reporter)', icon:'⚙️', color:'blue', themeColor:'#3B82F6', bgColor:'bg-blue-50', interest:"미래 기술(6G, 로봇, 자율주행) 트렌드를 내가 가장 먼저 파악하고, 전문가처럼 분석할 수 있습니다.", activities:[ {title:"조사 (Discover)", desc:"Perplexity 등을 활용해 자율주행 기술의 한계점과 최신 돌파구를 검색하고 요약합니다."}, {title:"구조화 (Connect)", desc:"조사한 내용을 바탕으로 기술 블로그 포스팅 목차를 생성하고 논리적 흐름을 잡습니다."}, {title:"제작 (Create)", desc:"Gamma 같은 PPT 생성 AI를 활용해 5분 만에 그럴듯한 발표 자료를 완성합니다."} ], tools:['Perplexity', 'Gamma', 'ChatGPT'], skills:[30, 80, 70, 60, 90] },
+                'sci': { id:'sci', name:'자연과학 계열', trackName:'데이터 스토리텔러 (Data Storyteller)', icon:'🧪', color:'green', themeColor:'#10B981', bgColor:'bg-green-50', interest:"복잡한 실험 데이터가 말 한마디로 예쁜 그래프가 되는 시각적 쾌감을 경험합니다.", activities:[ {title:"전처리 (Discover)", desc:"뒤죽박죽인 실험 데이터를 업로드하고 '결측치(빈칸) 채워줘'라고 자연어로 요청합니다."}, {title:"시각화 (Connect)", desc:"'가장 특이한 패턴을 찾아 그래프로 그려줘'라며 탐색적 데이터 분석(EDA)을 수행합니다."}, {title:"해석 (Create)", desc:"도출된 그래프가 의미하는 과학적 사실을 자신의 전공 지식으로 해석하여 리포트를 작성합니다."} ], tools:['ChatGPT Data Analysis', 'Excel', 'Tableau Public'], skills:[40, 90, 100, 50, 70] },
+                'med': { id:'med', name:'의학·보건 계열', trackName:'AI 헬스 커뮤니케이터', icon:'⚕️', color:'red', themeColor:'#EF4444', bgColor:'bg-red-50', interest:"까다로운 환자 연기를 하는 AI와 대화하며, 책으로만 배우던 환자 응대를 실전처럼 연습합니다.", activities:[ {title:"설정 (Discover)", desc:"프롬프트로 AI에게 '식단을 거부하는 짜증 난 50대 당뇨 환자' 페르소나를 부여합니다."}, {title:"롤플레잉 (Connect)", desc:"간호사/치료사가 되어 AI 환자를 설득하고 교육하는 실시간 채팅 실습을 진행합니다."}, {title:"피드백 (Create)", desc:"대화 종료 후 AI에게 나의 공감 능력과 전문성을 평가받고 개선점을 찾습니다."} ], tools:['ChatGPT (Roleplay)', 'DeepL', 'Medical Papers'], skills:[60, 50, 40, 100, 30] },
+                'law': { id:'law', name:'법학 계열', trackName:'생활 법률 AI 비서', icon:'⚖️', color:'purple', themeColor:'#8B5CF6', bgColor:'bg-purple-50', interest:"전세 사기, 저작권 분쟁 등 내 주변에서 일어날 수 있는 법률 문제를 AI와 함께 해결합니다.", activities:[ {title:"계약 검토 (Discover)", desc:"가상의 원룸 계약서 사진을 올리고 '불리한 독소 조항'이 있는지 AI에게 찾게 합니다."}, {title:"논리 대결 (Connect)", desc:"저작권 침해 사례를 두고 AI와 각각 검사/변호사 역할을 맡아 모의 법정 토론을 합니다."}, {title:"문서 작성 (Create)", desc:"내용증명이나 소장 초안을 AI의 도움을 받아 법률적 형식을 갖추어 빠르게 작성합니다."} ], tools:['Claude', 'LawTalk', 'LegalTech Apps'], skills:[30, 100, 80, 80, 40] },
+                'soc': { id:'soc', name:'사회과학 계열', trackName:'소셜 트렌드 헌터', icon:'👥', color:'yellow', themeColor:'#F59E0B', bgColor:'bg-yellow-50', interest:"유튜브 댓글과 SNS 반응을 분석해 요즘 뜨는 트렌드와 대중의 속마음을 읽어냅니다.", activities:[ {title:"수집 (Discover)", desc:"유튜브 영상 댓글이나 뉴스 기사 댓글을 크롤링 툴이나 복사/붙여넣기로 수집합니다."}, {title:"분석 (Connect)", desc:"노코딩 툴(Orange3)로 워드클라우드를 만들고 긍정/부정 비율을 시각적으로 확인합니다."}, {title:"인사이트 (Create)", desc:"'사람들이 왜 이 이슈에 분노하는지' 사회학적 관점으로 해석한 보고서를 작성합니다."} ], tools:['Orange3', 'Liner', 'Excel'], skills:[50, 70, 90, 70, 60] },
+                'art': { id:'art', name:'예체능 계열', trackName:'AI 아트 디렉터 & 코치', icon:'🎨', color:'pink', themeColor:'#EC4899', bgColor:'bg-pink-50', interest:"내 머릿속 아이디어가 1분 만에 고퀄리티 이미지로 탄생하고, 내 운동 자세를 AI 코치가 교정해줍니다.", activities:[ {title:"상상 (Discover)", desc:"추상적인 감정이나 컨셉을 구체적인 묘사 글(프롬프트)로 바꾸는 연습을 합니다."}, {title:"큐레이션 (Connect)", desc:"AI가 만든 시안 중 베스트 컷을 선별하고, '조명을 어둡게' 등의 구체적 수정 명령을 내립니다."}, {title:"적용 (Create)", desc:"완성된 이미지를 포트폴리오에 쓰거나, 운동 동작 분석 결과를 토대로 훈련 계획을 짭니다."} ], tools:['Midjourney', 'Adobe Firefly', 'VIBE', 'Canva AI'], skills:[100, 40, 50, 60, 80] }
+            },
+            // 2. CLOUD DATA
+            cld: {
+                'eng': { id:'eng', name:'공학 계열', trackName:'퓨처 테크 리포터 (Future Tech Reporter)', icon:'⚙️', color:'blue', themeColor:'#3B82F6', bgColor:'bg-blue-50', interest:"최신 기술(6G, 로봇) 트렌드를 내가 가장 먼저 파악하고, 전문가처럼 분석할 수 있습니다.", cloudInfra:"AWS 또는 네이버클라우드의 고성능 컴퓨팅 자원을 활용하는 AI 서비스를 사용합니다.", activities:[ {title:"조사 (Discover)", desc:"Perplexity 또는 HyperCLOVA X를 활용해 최신 기술 동향을 조사합니다."}, {title:"구조화 (Connect)", desc:"조사한 데이터를 바탕으로 목차를 구성합니다. Notion 등 클라우드 협업 툴에 정리합니다."}, {title:"제작 (Create)", desc:"Gamma를 사용해 웹 브라우저 상에서 발표 자료를 즉시 렌더링하고 공유합니다."} ], tools:['HyperCLOVA X (Naver)', 'Perplexity', 'Gamma'], skills:[30, 80, 70, 60, 90] },
+                'sci': { id:'sci', name:'자연과학 계열', trackName:'데이터 스토리텔러 (Data Storyteller)', icon:'🧪', color:'green', themeColor:'#10B981', bgColor:'bg-green-50', interest:"복잡한 실험 데이터가 말 한마디로 예쁜 그래프가 되는 시각적 쾌감을 경험합니다.", cloudInfra:"별도의 설치 없이 AWS/네이버클라우드 상에서 동작하는 분석 환경을 이용합니다.", activities:[ {title:"전처리 (Discover)", desc:"실험 데이터를 클라우드 스토리지에 업로드하고 AI에게 로드를 요청합니다."}, {title:"시각화 (Connect)", desc:"클라우드 기반 분석 도구(AWS QuickSight 등)를 활용해 데이터 패턴을 시각화합니다."}, {title:"해석 (Create)", desc:"도출된 그래프를 웹 리포트로 발행하여 연구 결과를 공유합니다."} ], tools:['AWS QuickSight', 'ChatGPT Data Analysis', 'Excel'], skills:[40, 90, 100, 50, 70] },
+                'med': { id:'med', name:'의학·보건 계열', trackName:'AI 헬스 커뮤니케이터', icon:'⚕️', color:'red', themeColor:'#EF4444', bgColor:'bg-red-50', interest:"까다로운 환자 연기를 하는 AI와 대화하며, 실전처럼 환자 응대를 연습합니다.", cloudInfra:"네이버 HyperCLOVA X 등 클라우드 API를 통해 제공되는 한국어 특화 LLM을 활용합니다.", activities:[ {title:"설정 (Discover)", desc:"AI에게 '짜증 난 환자' 페르소나를 부여하는 프롬프트를 입력합니다."}, {title:"롤플레잉 (Connect)", desc:"생성된 챗봇 인터페이스를 통해 환자와 실시간 채팅 상담 실습을 진행합니다."}, {title:"피드백 (Create)", desc:"상담 로그를 클라우드에 저장하고, AI에게 나의 공감 능력을 평가받습니다."} ], tools:['HyperCLOVA X (Naver)', 'AWS Bedrock', 'DeepL'], skills:[60, 50, 40, 100, 30] },
+                'law': { id:'law', name:'법학 계열', trackName:'생활 법률 AI 비서', icon:'⚖️', color:'purple', themeColor:'#8B5CF6', bgColor:'bg-purple-50', interest:"전세 사기, 저작권 분쟁 등 내 주변 법률 문제를 AI와 함께 해결합니다.", cloudInfra:"네이버클라우드의 한국 법률 데이터 처리 능력과 리걸테크 SaaS를 활용합니다.", activities:[ {title:"검토 (Discover)", desc:"HyperCLOVA X를 활용해 복잡한 판례를 요약하고 주요 쟁점을 파악합니다."}, {title:"논리 대결 (Connect)", desc:"AI와 모의 법정 토론을 진행하며 법리적 논리를 정교화합니다."}, {title:"작성 (Create)", desc:"내용증명 등 법률 문서를 클라우드 문서 도구(Naver Works)에서 작성합니다."} ], tools:['HyperCLOVA X (Naver)', 'LawTalk', 'Naver Works'], skills:[30, 100, 80, 80, 40] },
+                'soc': { id:'soc', name:'사회과학 계열', trackName:'소셜 트렌드 헌터', icon:'👥', color:'yellow', themeColor:'#F59E0B', bgColor:'bg-yellow-50', interest:"유튜브 댓글과 SNS 반응을 분석해 요즘 뜨는 트렌드와 대중의 속마음을 읽어냅니다.", cloudInfra:"네이버 데이터랩(Data Lab) 및 AWS 기반의 데이터 수집 도구를 활용합니다.", activities:[ {title:"수집 (Discover)", desc:"네이버 데이터랩 트렌드 데이터나 크롤링 툴을 활용해 여론을 수집합니다."}, {title:"분석 (Connect)", desc:"Orange3 등을 이용해 워드클라우드를 생성하고 여론 분포를 시각화합니다."}, {title:"인사이트 (Create)", desc:"분석 결과를 공유 가능한 웹 링크 형태의 리포트로 제작합니다."} ], tools:['Naver Data Lab', 'Orange3', 'Liner'], skills:[50, 70, 90, 70, 60] },
+                'art': { id:'art', name:'예체능 계열', trackName:'AI 아트 디렉터', icon:'🎨', color:'pink', themeColor:'#EC4899', bgColor:'bg-pink-50', interest:"내 머릿속 아이디어가 1분 만에 고퀄리티 이미지로 탄생하는 경험을 제공합니다.", cloudInfra:"로컬 장비 사양과 무관하게, 클라우드 GPU 서버(AWS/Naver)에서 렌더링을 수행합니다.", activities:[ {title:"상상 (Discover)", desc:"AWS Bedrock(Titan) 또는 Midjourney에 프롬프트를 입력해 이미지를 생성합니다."}, {title:"큐레이션 (Connect)", desc:"생성된 시안 중 베스트를 선별하고, 구체적인 수정 명령을 내립니다."}, {title:"적용 (Create)", desc:"완성된 결과물을 클라우드 포트폴리오 플랫폼에 업로드하여 공유합니다."} ], tools:['AWS Bedrock', 'Midjourney', 'Adobe Firefly'], skills:[100, 40, 50, 60, 80] }
+            },
+            // 3. AGENT DATA
+            agt: {
+                'common': { id:'common', name:'공통 기초 (필수)', trackName:'AI 에이전트 플랫폼 마스터리', icon:'🎓', color:'gray', themeColor:'#4B5563', bgColor:'bg-gray-100', interest:"어떤 전공이든 상관없습니다. 모든 AI 활용의 기초가 되는 '검색형 AI 플랫폼' 사용법을 마스터합니다.", wrappingPoint:"<strong>[기본 소양] + [Platform Wrapping]</strong><br>전공 진입 전, AI 에이전트 플랫폼의 검색(Search), 데이터 요약, 생성 기능을 익혀 AI 리터러시를 확보합니다.", activities:[ {title:"플랫폼 온보딩", desc:"AI 플랫폼에 가입하고, 일반 검색과 AI 검색(Agent Search)의 차이점을 실습합니다."}, {title:"AI 사고법", desc:"단순 질문이 아닌, AI에게 역할(Role)과 맥락(Context)을 부여하는 프롬프트 엔지니어링 기초를 배웁니다."}, {title:"나만의 에이전트 기획", desc:"내 전공에서 어떤 반복 업무를 AI에게 맡길지 아이디어를 구상하고 에이전트의 페르소나를 정의합니다."} ], tools:['AI Search Platform', 'LLM Interface', 'Agent Builder'], skills:[20, 40, 40, 20, 100] },
+                'eng': { id:'eng', name:'공학 계열', trackName:'기술 트렌드 분석 에이전트 만들기', icon:'⚙️', color:'blue', themeColor:'#3B82F6', bgColor:'bg-blue-50', interest:"매일 쏟아지는 최신 기술 뉴스, 일일이 찾지 마세요. 나 대신 인터넷을 뒤져 요약해주는 에이전트를 만듭니다.", wrappingPoint:"<strong>[기술 조사] + [Agent Wrapping]</strong><br>특정 키워드(예: 6G, 자율주행)에 대해 신뢰할 수 있는 소스(학술 DB, Tech Blog 등)만 검색하도록 에이전트를 튜닝합니다.", activities:[ {title:"에이전트 설정", desc:"플랫폼의 '전문가 모드'를 켜고, 검색 범위를 신뢰할 수 있는 기술 데이터베이스로 한정합니다."}, {title:"리포트 자동화", desc:"데이터 분석 기능을 활용해 검색된 기술 스펙을 비교표(Table) 형태로 자동 정리하도록 지시합니다."}, {title:"배포 및 활용", desc:"완성된 에이전트를 공유하여 팀원들과 함께 프로젝트 자료 조사 시간을 획기적으로 단축합니다."} ], tools:['Custom AI Agent', 'Data Analysis Tool', 'Cloud Workspace'], skills:[30, 80, 80, 60, 90] },
+                'sci': { id:'sci', name:'자연과학 계열', trackName:'실험 데이터 분석 에이전트 만들기', icon:'🧪', color:'green', themeColor:'#10B981', bgColor:'bg-green-50', interest:"복잡한 엑셀 함수와 파이썬 코드 없이, 데이터 파일만 던져주면 그래프를 그려주는 분석 비서를 만듭니다.", wrappingPoint:"<strong>[실험 데이터] + [Agent Wrapping]</strong><br>에이전트에게 '데이터 과학자' 페르소나를 부여하고, 우리 실험실의 데이터 형식(Protocol)을 학습시킵니다.", activities:[ {title:"지식 주입", desc:"에이전트 설정(Instruction)에 실험 변수들의 의미와 이상치(Outlier) 처리 기준을 자연어로 입력합니다."}, {title:"분석 시뮬레이션", desc:"가상의 CSV 파일을 업로드하고, '상관관계를 히트맵으로 그려줘'라고 명령하여 성능을 테스트합니다."}, {title:"리포팅 봇 완성", desc:"분석 결과를 논문 형식의 문장으로 변환해주는 'Result 작성' 전용 에이전트로 완성합니다."} ], tools:['Data Analysis Agent', 'CSV/Excel Upload', 'Chart Generation'], skills:[40, 90, 100, 50, 70] },
+                'med': { id:'med', name:'의학·보건 계열', trackName:'환자 시뮬레이션 에이전트 만들기', icon:'⚕️', color:'red', themeColor:'#EF4444', bgColor:'bg-red-50', interest:"다양한 증상을 호소하는 가상 환자를 직접 만들어, 언제 어디서든 문진과 상담 연습을 할 수 있습니다.", wrappingPoint:"<strong>[임상 시나리오] + [Agent Wrapping]</strong><br>특정 질환(당뇨, 고혈압 등)과 성격(불안함, 공격적 등)을 가진 '환자 페르소나' 에이전트를 생성합니다.", activities:[ {title:"페르소나 설계", desc:"AI 에이전트에게 '당신은 10년 차 당뇨 환자이며, 식단 조절에 지쳐 화가 나 있다'는 역할을 부여합니다."}, {title:"대화 시나리오 테스트", desc:"직접 만든 환자 에이전트와 대화하며, 에이전트가 의학적으로 타당한 반응을 하는지 검증(Validation)합니다."}, {title:"자가 학습 도구화", desc:"이 에이전트를 동기들에게 공유하여 서로 만든 다양한 환자 케이스를 체험하고 실습합니다."} ], tools:['Custom Persona Agent', 'Roleplay Prompting', 'Medical Knowledge Base'], skills:[60, 50, 40, 100, 30] },
+                'law': { id:'law', name:'법학 계열', trackName:'법률 자문 에이전트 만들기', icon:'⚖️', color:'purple', themeColor:'#8B5CF6', bgColor:'bg-purple-50', interest:"내 전공 서적과 판례 데이터를 학습한 나만의 AI 법률 파트너를 만들어 과제를 해결합니다.", wrappingPoint:"<strong>[법률 텍스트] + [Agent Wrapping]</strong><br>특정 법령이나 판례 PDF 파일을 에이전트의 지식 베이스(Knowledge)로 업로드하여 답변의 정확도를 높입니다.", activities:[ {title:"지식 베이스 구축", desc:"관심 있는 분야(예: 저작권법, 임대차보호법)의 주요 판례 텍스트를 에이전트에 업로드(RAG)합니다."}, {title:"검토 로직 설정", desc:"에이전트에게 '계약서에서 독소 조항을 찾을 때는 반드시 제X조를 근거로 들 것'이라는 규칙을 설정합니다."}, {title:"자문 비서 활용", desc:"복잡한 사례 문제를 입력하고, 에이전트가 법리적 논거를 제대로 구성하는지 확인 및 수정합니다."} ], tools:['Knowledge Upload (RAG)', 'PDF Analysis', 'Legal Prompting'], skills:[30, 100, 80, 80, 40] },
+                'soc': { id:'soc', name:'사회과학 계열', trackName:'소셜 트렌드 헌터 에이전트', icon:'👥', color:'yellow', themeColor:'#F59E0B', bgColor:'bg-yellow-50', interest:"유튜브, 뉴스, SNS를 24시간 모니터링하며 내가 원하는 키워드의 여론을 정리해주는 에이전트를 만듭니다.", wrappingPoint:"<strong>[여론 데이터] + [Agent Wrapping]</strong><br>플랫폼의 실시간 웹 검색 기능을 활용해 특정 사회 이슈에 대한 최신 반응만을 수집하도록 설정합니다.", activities:[ {title:"검색 소스 최적화", desc:"에이전트가 '뉴스 댓글'과 '소셜 미디어' 위주로 정보를 수집하도록 소스를 제한합니다."}, {title:"분석 프레임워크 적용", desc:"수집된 데이터에서 '긍정/부정' 키워드를 추출하여 표(Table)로 정리하라는 지시를 내립니다."}, {title:"인사이트 리포터", desc:"매주 사회 이슈를 정리해주는 나만의 뉴스 클리핑 에이전트로 활용합니다."} ], tools:['Web Crawling Agent', 'Sentiment Analysis', 'Trend Summarizer'], skills:[50, 70, 90, 70, 60] },
+                'art': { id:'art', name:'예체능 계열', trackName:'AI 크리에이티브 디렉터 에이전트', icon:'🎨', color:'pink', themeColor:'#EC4899', bgColor:'bg-pink-50', interest:"나만의 예술적 스타일과 선호도를 학습한 AI 디렉터와 함께 끝없이 아이디어를 발전시킵니다.", wrappingPoint:"<strong>[창작 아이디어] + [Agent Wrapping]</strong><br>내가 좋아하는 화풍, 디자인 레퍼런스, 색감 코드를 에이전트에 미리 학습시켜 '나만의 스타일'을 이해하게 합니다.", activities:[ {title:"스타일 학습", desc:"내가 추구하는 디자인 무드보드나 이미지를 에이전트에게 설명하고 스타일 가이드를 입력합니다."}, {title:"프롬프트 생성기", desc:"추상적인 아이디어를 말하면, 이를 이미지 생성 AI용 고품질 프롬프트로 변환해주는 에이전트를 만듭니다."}, {title:"아이디어 핑퐁", desc:"창작의 막다른 골목에서 에이전트에게 '다른 관점의 시안 3가지를 제안해줘'라고 요청합니다."} ], tools:['Creative Agent', 'Image Gen Prompt Helper', 'Reference Board'], skills:[100, 40, 50, 60, 80] }
+            }
+        };
+
+        // --- CONTROLLER ---
+        const App = {
+            charts: {},
+            
+            navigate: function(viewId) {
+                // Hide all views
+                document.querySelectorAll('.view-section').forEach(el => {
+                    el.classList.remove('active');
+                });
+                // Show target view
+                const target = document.getElementById('view-' + viewId);
+                target.classList.add('active');
+                
+                window.scrollTo(0,0);
+                
+                // Initialize specific views
+                if(viewId === 'standard') this.initStandard();
+                if(viewId === 'cloud') this.initCloud();
+                if(viewId === 'agent') this.initAgent();
+            },
+
+            // --- RENDER HELPERS ---
+            renderBtns: function(prefix, dataSet, clickHandler) {
+                const grid = document.getElementById(prefix + '-majorGrid');
+                if(!grid || grid.children.length > 0) return; // Prevent re-render
+
+                Object.values(dataSet).forEach(item => {
+                    const btn = document.createElement('div');
+                    const isCommon = item.id === 'common';
+                    // Style classes
+                    let baseClass = `major-card p-4 rounded-xl border flex items-center gap-4 transition-all duration-200 group`;
+                    if (isCommon) {
+                        baseClass += ` bg-gray-800 text-white border-gray-700 hover:bg-gray-700`;
+                    } else {
+                        baseClass += ` bg-white text-gray-800 border-gray-200 hover:border-${item.color}-400`;
+                    }
+                    
+                    btn.className = baseClass;
+                    btn.id = `btn-${prefix}-${item.id}`;
+                    btn.onclick = () => clickHandler(item.id);
+                    
+                    const iconBg = isCommon ? 'bg-gray-600' : `bg-${item.color}-50`;
+                    btn.innerHTML = `
+                        <div class="w-12 h-12 rounded-full ${iconBg} flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shrink-0">
+                            ${item.icon}
+                        </div>
+                        <div class="overflow-hidden text-left">
+                            <h3 class="font-bold ${isCommon?'text-white':'text-gray-800'} group-hover:text-${item.color}-600 transition-colors">${item.name}</h3>
+                            <p class="text-xs ${isCommon?'text-gray-400':'text-gray-500'} truncate">${item.trackName.split('(')[0]}</p>
+                        </div>
+                    `;
+                    grid.appendChild(btn);
+                });
+            },
+
+            updateUI: function(prefix, data) {
+                // 1. Buttons Highlight
+                document.querySelectorAll(`#${prefix}-majorGrid .major-card`).forEach(btn => {
+                    // Reset Logic needed per prefix type
+                    if(btn.id.includes('common')) {
+                        btn.className = `major-card p-4 rounded-xl border flex items-center gap-4 transition-all bg-gray-800 text-white border-gray-700 group hover:bg-gray-700`;
+                    } else {
+                        btn.className = `major-card p-4 rounded-xl border flex items-center gap-4 transition-all bg-white text-gray-800 border-gray-200 group hover:border-gray-400`;
+                    }
+                });
+                
+                const activeBtn = document.getElementById(`btn-${prefix}-${data.id}`);
+                if (data.id === 'common') {
+                    activeBtn.classList.add('ring-2', 'ring-offset-2', 'ring-gray-500');
+                } else {
+                    activeBtn.classList.remove('bg-white');
+                    activeBtn.classList.add('bg-gray-50', 'ring-2', 'ring-offset-2', `ring-${data.color}-400`);
+                }
+
+                // 2. Header Colors
+                const header = document.getElementById(`${prefix}-header`);
+                header.className = `p-6 border-b border-${data.color}-100 flex justify-between items-start transition-colors duration-300 ${data.bgColor}`;
+                
+                const badge = document.getElementById(`${prefix}-badge`);
+                badge.className = `inline-block px-2 py-1 text-xs font-bold text-white rounded mb-2 bg-${data.color}-500`;
+                badge.textContent = data.name;
+                
+                document.getElementById(`${prefix}-title`).textContent = data.trackName;
+                document.getElementById(`${prefix}-subtitle`).textContent = prefix === 'agt' && data.id === 'common' 
+                    ? "모든 전공자가 필수로 이수해야 하는 AI 플랫폼 기초 과정" 
+                    : "AI와 함께하는 전공 역량 강화 과정";
+                    
+                document.getElementById(`${prefix}-icon`).textContent = data.icon;
+
+                // 3. Interest
+                const interestBox = document.getElementById(`${prefix}-interestBox`);
+                interestBox.classList.remove('hidden');
+                interestBox.className = `bg-${data.color}-50 border-l-4 border-${data.color}-400 p-4 mb-4 rounded-r-lg`;
+                interestBox.querySelector('h4').className = `text-sm font-bold text-${data.color}-800 uppercase mb-1`;
+                document.getElementById(`${prefix}-interestText`).textContent = `"${data.interest}"`;
+
+                // 4. Cloud / Wrapping Specifics
+                if(prefix === 'cld' && document.getElementById('cld-cloudBox')) {
+                    const cBox = document.getElementById('cld-cloudBox');
+                    cBox.classList.remove('hidden');
+                    document.getElementById('cld-cloudText').innerHTML = data.cloudInfra;
+                }
+                if(prefix === 'agt' && document.getElementById('agt-wrappingBox')) {
+                    const wBox = document.getElementById('agt-wrappingBox');
+                    wBox.classList.remove('hidden');
+                    wBox.className = `bg-white border border-${data.color}-200 p-4 mb-8 rounded-lg flex items-start gap-3 shadow-sm`;
+                    wBox.querySelector('h4').className = `text-sm font-bold text-${data.color}-600 uppercase mb-1`;
+                    wBox.querySelector('h4').textContent = data.id === 'common' ? "플랫폼 래핑 (Platform Wrapping)" : "나만의 에이전트 래핑 (Agent Wrapping)";
+                    wBox.querySelector('.text-2xl').textContent = data.id === 'common' ? '🎁' : '🤖';
+                    document.getElementById('agt-wrappingText').innerHTML = data.wrappingPoint;
+                }
+
+                // 5. Activities
+                document.getElementById(`${prefix}-activitiesSection`).classList.remove('hidden');
+                const actList = document.getElementById(`${prefix}-activityList`);
+                actList.innerHTML = '';
+                actList.className = `space-y-6 relative border-l-2 border-${data.color}-200 ml-3 pl-6 pb-2`;
+                
+                data.activities.forEach((act, index) => {
+                    actList.innerHTML += `
+                        <div class="relative">
+                            <span class="absolute -left-[33px] top-0 flex items-center justify-center w-6 h-6 bg-${data.color}-100 rounded-full ring-4 ring-white text-xs font-bold text-${data.color}-600">
+                                ${index + 1}
+                            </span>
+                            <h4 class="text-md font-bold text-gray-800">${act.title}</h4>
+                            <p class="text-sm text-gray-600 mt-1 leading-relaxed">${act.desc}</p>
+                        </div>
+                    `;
+                });
+
+                // 6. Tools
+                const toolList = document.getElementById(`${prefix}-toolList`);
+                toolList.innerHTML = '';
+                data.tools.forEach(tool => {
+                    toolList.innerHTML += `
+                        <span class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-600 shadow-sm">
+                            ${tool}
+                        </span>`;
+                });
+
+                // 7. Chart
+                document.getElementById(`${prefix}-chartSection`).classList.remove('hidden');
+                this.renderChart(prefix, data);
+            },
+
+            renderChart: function(prefix, data) {
+                const ctx = document.getElementById(`${prefix}-skillRadarChart`).getContext('2d');
+                if (this.charts[prefix]) this.charts[prefix].destroy();
+
+                // Labels are slightly different for Agent vs others in original files? 
+                // Standard/Cloud: Creativity, Logic, Analysis, Comm, Tech
+                // Agent: Platform, Prompt, Domain, Solve, Share
+                const labels = prefix === 'agt' 
+                    ? ['플랫폼 이해 (Platform)', '프롬프트 설계 (Prompt)', '전공 지식 결합 (Domain)', '응용/문제해결 (Solve)', '배포/공유 (Share)']
+                    : ['창의성 (Creativity)', '논리력 (Logic)', '데이터 분석 (Analysis)', '소통/공감 (Comm)', '기술 활용 (Tech)'];
+
+                this.charts[prefix] = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: data.name + ' 역량',
+                            data: data.skills,
+                            backgroundColor: this.hexToRgba(data.themeColor, 0.2),
+                            borderColor: data.themeColor,
+                            pointBackgroundColor: data.themeColor,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: data.themeColor,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: '#e2e8f0' },
+                                grid: { color: '#e2e8f0' },
+                                pointLabels: { font: { size: 11, family: "'Noto Sans KR', sans-serif" }, color: '#4a5568' },
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                ticks: { display: false, stepSize: 20 }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                padding: 10,
+                                bodyFont: { family: "'Noto Sans KR', sans-serif" }
+                            }
+                        },
+                        animation: { duration: 1000, easing: 'easeOutQuart' }
+                    }
+                });
+            },
+
+            hexToRgba: function(hex, alpha) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            },
+
+            // --- INITIALIZERS ---
+            initStandard: function() {
+                if(this.stdInited) return;
+                this.renderBtns('std', DB.std, (id) => this.updateUI('std', DB.std[id]));
+                this.updateUI('std', DB.std['eng']); 
+                this.stdInited = true;
+            },
+            initCloud: function() {
+                if(this.cldInited) return;
+                this.renderBtns('cld', DB.cld, (id) => this.updateUI('cld', DB.cld[id]));
+                this.updateUI('cld', DB.cld['eng']); 
+                this.cldInited = true;
+            },
+            initAgent: function() {
+                if(this.agtInited) return;
+                this.renderBtns('agt', DB.agt, (id) => this.updateUI('agt', DB.agt[id]));
+                this.updateUI('agt', DB.agt['common']); 
+                this.agtInited = true;
+            }
+        };
+
+        // Start default
+        // App.navigate('home') is handled by HTML class 'active'
+    </script>
+</body>
+</html>
