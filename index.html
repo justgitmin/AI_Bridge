@@ -44,6 +44,34 @@
         .cost-table th { background-color: #f3f4f6; color: #1f2937; text-transform: uppercase; font-weight: bold; font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.75rem 1.5rem; border-bottom: 2px solid #e5e7eb; }
         .cost-table td { padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 0.875rem; background-color: #ffffff; }
         .cost-table tr:hover td { background-color: #f9fafb; }
+
+        /* Chart Container for Mini Charts */
+        .chart-container-small {
+            position: relative;
+            width: 100%;
+            height: 160px; /* Dashboard look optimized */
+        }
+
+        /* Text Proposal Specific Styles */
+        .doc-paper {
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #e5e7eb;
+        }
+        .doc-h1 { font-size: 24px; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 30px; font-weight: bold; color: #1a202c; }
+        .doc-h2 { font-size: 18px; margin-top: 30px; margin-bottom: 15px; color: #2c3e50; border-left: 4px solid #3498db; padding-left: 10px; font-weight: bold; }
+        .doc-h3 { font-size: 16px; margin-top: 20px; margin-bottom: 10px; font-weight: bold; color: #2d3748; }
+        .doc-p { margin-bottom: 10px; font-size: 14px; line-height: 1.6; color: #4a5568; }
+        .doc-ul { margin-bottom: 15px; padding-left: 20px; font-size: 14px; list-style-type: disc; color: #4a5568; }
+        .doc-li { margin-bottom: 5px; }
+        .doc-box { background-color: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 14px; }
+        .doc-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+        .doc-th, .doc-td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .doc-th { background-color: #f2f2f2; font-weight: bold; color: #2d3748; }
+        .doc-footer { margin-top: 50px; font-size: 12px; color: #777; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -63,6 +91,9 @@
                     <button id="nav-detail-p1" onclick="App.navigate('detail-p1')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">1단계</button>
                     <button id="nav-detail-p2" onclick="App.navigate('detail-p2')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">2단계</button>
                     <button id="nav-detail-p3" onclick="App.navigate('detail-p3')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">3단계</button>
+                    <button id="nav-text" onclick="App.navigate('text')" class="px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-1">
+                        <span>📋</span> 제안서(텍스트)
+                    </button>
                 </div>
             </div>
         </div>
@@ -98,7 +129,6 @@
         <main class="max-w-7xl mx-auto px-4 py-12 pb-24">
             <h3 class="text-center text-sm font-bold text-gray-400 uppercase tracking-widest mb-8">세부 단계별 커리큘럼 보기</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
                 <!-- Phase 1 Card -->
                 <div onclick="App.navigate('detail-p1')" class="phase-card bg-white rounded-2xl p-8 relative overflow-hidden group h-full flex flex-col">
                     <div class="absolute top-0 left-0 w-full h-2 bg-indigo-500"></div>
@@ -113,7 +143,6 @@
                         <span class="text-indigo-600 font-bold text-sm">상세보기 →</span>
                     </div>
                 </div>
-
                 <!-- Phase 2 Card -->
                 <div onclick="App.navigate('detail-p2')" class="phase-card bg-white rounded-2xl p-8 relative overflow-hidden group h-full flex flex-col">
                     <div class="absolute top-0 left-0 w-full h-2 bg-purple-500"></div>
@@ -128,7 +157,6 @@
                         <span class="text-purple-600 font-bold text-sm">상세보기 →</span>
                     </div>
                 </div>
-
                 <!-- Phase 3 Card -->
                 <div onclick="App.navigate('detail-p3')" class="phase-card bg-white rounded-2xl p-8 relative overflow-hidden group h-full flex flex-col">
                     <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
@@ -161,7 +189,6 @@
         </div>
 
         <div class="max-w-5xl mx-auto px-4 py-12">
-            
             <!-- Intro Box -->
             <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200 mb-12">
                 <h3 class="text-xl font-bold text-gray-900 mb-4">📢 제안 개요</h3>
@@ -180,9 +207,8 @@
             <!-- Roadmap Section -->
             <div class="space-y-8 mb-16">
                 <h3 class="text-2xl font-bold text-gray-900 border-l-4 border-indigo-600 pl-4">📍 통합 로드맵</h3>
-                
                 <!-- Step 1 Summary -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row cursor-pointer hover:shadow-md transition-shadow" onclick="App.navigate('detail-p1')">
                     <div class="bg-indigo-600 w-full md:w-24 flex items-center justify-center p-4">
                         <span class="text-white font-bold text-lg whitespace-nowrap">Step 1</span>
                     </div>
@@ -199,9 +225,8 @@
                         </ul>
                     </div>
                 </div>
-
                 <!-- Step 2 Summary -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row cursor-pointer hover:shadow-md transition-shadow" onclick="App.navigate('detail-p2')">
                     <div class="bg-purple-600 w-full md:w-24 flex items-center justify-center p-4">
                         <span class="text-white font-bold text-lg whitespace-nowrap">Step 2</span>
                     </div>
@@ -218,9 +243,8 @@
                         </ul>
                     </div>
                 </div>
-
                 <!-- Step 3 Summary -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col md:flex-row cursor-pointer hover:shadow-md transition-shadow" onclick="App.navigate('detail-p3')">
                     <div class="bg-blue-600 w-full md:w-24 flex items-center justify-center p-4">
                         <span class="text-white font-bold text-lg whitespace-nowrap">Step 3</span>
                     </div>
@@ -239,13 +263,12 @@
                 </div>
             </div>
 
-            <!-- Budget Section (Moved Here) -->
-            <div id="cost-simulation" class="bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
+            <!-- Budget Section -->
+            <div id="cost-simulation" class="bg-white border border-gray-200 rounded-2xl shadow-lg p-8 mb-12">
                 <h2 class="text-2xl font-bold mb-2 flex items-center text-gray-900">
                     <span class="mr-2">💰</span> 예산 시뮬레이션
                 </h2>
                 <p class="text-gray-600 text-sm mb-6">학교 측 예산 수립을 위한 1인당 예상 비용 산출표 (TimelyGPT 및 클라우드 인프라)</p>
-                
                 <div class="overflow-x-auto bg-white border border-gray-200 rounded-lg">
                     <table class="w-full text-left cost-table">
                         <thead>
@@ -295,6 +318,21 @@
                 </ul>
             </div>
 
+            <!-- Call to Action -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-8 text-center">
+                <h3 class="text-lg font-bold text-indigo-900 mb-2">도입을 검토 중이신가요?</h3>
+                <p class="text-sm text-indigo-700 mb-6">학교의 상황과 요구사항에 맞춘 커스터마이징 커리큘럼 및 견적 상담이 가능합니다.</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                    <div class="bg-white px-6 py-3 rounded-lg border border-indigo-200 shadow-sm flex items-center gap-2">
+                        <span class="text-indigo-600">📞</span>
+                        <span class="text-gray-700 font-bold text-sm">010-8485-7809</span>
+                    </div>
+                    <div class="bg-white px-6 py-3 rounded-lg border border-indigo-200 shadow-sm flex items-center gap-2">
+                        <span class="text-indigo-600">📧</span>
+                        <span class="text-gray-700 font-bold text-sm">sm@tbit.co.kr</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -302,7 +340,7 @@
     <div id="view-detail-p1" class="view-section flex-grow bg-white">
         <div class="bg-indigo-600 text-white py-12 px-4">
             <div class="max-w-4xl mx-auto">
-                <button onclick="App.navigate('home')" class="text-indigo-200 hover:text-white mb-4 text-sm flex items-center">← 메인으로 돌아가기</button>
+                <button onclick="App.navigate('proposal')" class="text-indigo-200 hover:text-white mb-4 text-sm flex items-center">← 제안서로 돌아가기</button>
                 <span class="bg-indigo-800 text-indigo-100 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Phase 1</span>
                 <h1 class="text-3xl font-bold mt-2">공통 기초 과정 (AI Agent Platform Mastery)</h1>
                 <p class="text-indigo-100 mt-2 text-lg">전공 무관, 모든 학생이 갖춰야 할 AI 리터러시와 TimelyGPT 기초 활용 능력 배양</p>
@@ -374,7 +412,7 @@
     <div id="view-detail-p2" class="view-section flex-grow bg-white">
         <div class="bg-purple-700 text-white py-12 px-4">
             <div class="max-w-4xl mx-auto">
-                <button onclick="App.navigate('home')" class="text-purple-200 hover:text-white mb-4 text-sm flex items-center">← 메인으로 돌아가기</button>
+                <button onclick="App.navigate('proposal')" class="text-purple-200 hover:text-white mb-4 text-sm flex items-center">← 제안서로 돌아가기</button>
                 <span class="bg-purple-900 text-purple-100 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Phase 2</span>
                 <h1 class="text-3xl font-bold mt-2">전공 심화 과정 (Major-Specific Agent)</h1>
                 <p class="text-purple-100 mt-2 text-lg">내 전공 지식을 학습한 전문 에이전트 구축 및 워크플로우 자동화</p>
@@ -441,107 +479,253 @@
             </div>
             
             <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center"><span class="mr-2">🎓</span> 계열별 에이전트 래핑 모델 (6대 계열)</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Engineering -->
-                <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl bg-white p-2 rounded-full shadow-sm">⚙️</span>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">공학 계열</h4>
-                            <p class="text-xs text-blue-600 font-bold uppercase">Tech Agent</p>
+            <div class="space-y-6">
+                <!-- Engineering Card -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div class="w-2 bg-blue-500 hidden md:block group-hover:w-3 transition-all"></div>
+                    
+                    <!-- Content -->
+                    <div class="p-6 flex-grow md:w-3/4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">⚙️</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">공학 계열 (Engineering)</h4>
+                                <p class="text-sm text-blue-600 font-bold uppercase tracking-wide">Tech Trend Analyzer Agent</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 italic mb-6 border-l-4 border-gray-100 pl-4 py-1">
+                            "신뢰할 수 있는 기술 스펙만을 선별하여 비교 분석하는 전문가형 에이전트"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🎯 지식 주입 (Wrapping)</strong>
+                                <span class="text-gray-800 font-medium">기술 DB/학술 소스 제한 & 스펙 용어 학습</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">⚡ 핵심 수행 (Core Task)</strong>
+                                <span class="text-gray-800 font-medium">스펙 비교표 자동 생성 및 기술 격차 분석</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🏆 최종 결과 (Outcome)</strong>
+                                <span class="text-gray-800 font-medium">기술 동향 브리핑 리포트</span>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-700 mb-3 font-medium">"신뢰할 수 있는 기술 스펙만 검색하라"</p>
-                    <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                        <li><strong>Wrapping:</strong> 기술 DB 및 학술 사이트로 검색 소스 제한</li>
-                        <li><strong>Task:</strong> 최신 기술(6G, 로봇) 스펙 비교표 자동 생성</li>
-                        <li><strong>Outcome:</strong> 기술 트렌드 분석 리포트</li>
-                    </ul>
+
+                    <!-- Chart -->
+                    <div class="p-4 md:w-1/4 bg-blue-50/30 border-l border-gray-100 flex flex-col items-center justify-center">
+                        <h5 class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2">역량 포커스</h5>
+                        <div class="chart-container-small" style="height: 160px; width: 100%;">
+                            <canvas id="chart-eng"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Natural Science -->
-                <div class="bg-green-50 p-6 rounded-xl border border-green-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl bg-white p-2 rounded-full shadow-sm">🧪</span>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">자연과학 계열</h4>
-                            <p class="text-xs text-green-600 font-bold uppercase">Lab Agent</p>
+                <!-- Natural Science Card -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div class="w-2 bg-green-500 hidden md:block group-hover:w-3 transition-all"></div>
+                    
+                    <div class="p-6 flex-grow md:w-3/4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🧪</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">자연과학 계열 (Natural Science)</h4>
+                                <p class="text-sm text-green-600 font-bold uppercase tracking-wide">Lab Protocol Analyst</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 italic mb-6 border-l-4 border-gray-100 pl-4 py-1">
+                            "실험실 고유의 데이터 처리 규칙을 준수하는 엄격한 분석 에이전트"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🎯 지식 주입 (Wrapping)</strong>
+                                <span class="text-gray-800 font-medium">실험 변수 정의 & 이상치(Outlier) 기준 학습</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">⚡ 핵심 수행 (Core Task)</strong>
+                                <span class="text-gray-800 font-medium">CSV 업로드 시 자동 전처리 및 시각화</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🏆 최종 결과 (Outcome)</strong>
+                                <span class="text-gray-800 font-medium">실험 결과 논문(Result) 초안</span>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-700 mb-3 font-medium">"우리 랩의 실험 프로토콜을 준수하라"</p>
-                    <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                        <li><strong>Wrapping:</strong> 실험 변수 의미 및 이상치 기준 학습</li>
-                        <li><strong>Task:</strong> CSV 데이터 업로드 시 자동 그래프 시각화</li>
-                        <li><strong>Outcome:</strong> 실험 결과 논문 초안 작성</li>
-                    </ul>
+
+                    <div class="p-4 md:w-1/4 bg-green-50/30 border-l border-gray-100 flex flex-col items-center justify-center">
+                        <h5 class="text-xs font-bold text-green-800 uppercase tracking-wider mb-2">역량 포커스</h5>
+                        <div class="chart-container-small" style="height: 160px; width: 100%;">
+                            <canvas id="chart-sci"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Medical -->
-                <div class="bg-red-50 p-6 rounded-xl border border-red-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl bg-white p-2 rounded-full shadow-sm">⚕️</span>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">의학·보건 계열</h4>
-                            <p class="text-xs text-red-600 font-bold uppercase">Patient Persona</p>
+                <!-- Medical Card -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div class="w-2 bg-red-500 hidden md:block group-hover:w-3 transition-all"></div>
+                    
+                    <div class="p-6 flex-grow md:w-3/4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">⚕️</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">의학·보건 계열 (Medical)</h4>
+                                <p class="text-sm text-red-600 font-bold uppercase tracking-wide">Clinical Persona Simulator</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 italic mb-6 border-l-4 border-gray-100 pl-4 py-1">
+                            "다양한 증상과 성격을 가진 가상 환자가 되어 임상 커뮤니케이션을 훈련"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🎯 지식 주입 (Wrapping)</strong>
+                                <span class="text-gray-800 font-medium">특정 질환/성격 페르소나 & 문진 시나리오</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">⚡ 핵심 수행 (Core Task)</strong>
+                                <span class="text-gray-800 font-medium">실시간 채팅을 통한 문진 및 상담 롤플레잉</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🏆 최종 결과 (Outcome)</strong>
+                                <span class="text-gray-800 font-medium">상담 스킬 분석 및 피드백 로그</span>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-700 mb-3 font-medium">"까다로운 환자가 되어 나를 시험하라"</p>
-                    <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                        <li><strong>Wrapping:</strong> 특정 질환/성격을 가진 가상 환자 페르소나 주입</li>
-                        <li><strong>Task:</strong> 실시간 문진 및 상담 롤플레잉</li>
-                        <li><strong>Outcome:</strong> 임상 커뮤니케이션 스킬 강화</li>
-                    </ul>
+
+                    <div class="p-4 md:w-1/4 bg-red-50/30 border-l border-gray-100 flex flex-col items-center justify-center">
+                        <h5 class="text-xs font-bold text-red-800 uppercase tracking-wider mb-2">역량 포커스</h5>
+                        <div class="chart-container-small" style="height: 160px; width: 100%;">
+                            <canvas id="chart-med"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Law -->
-                <div class="bg-purple-50 p-6 rounded-xl border border-purple-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl bg-white p-2 rounded-full shadow-sm">⚖️</span>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">법학 계열</h4>
-                            <p class="text-xs text-purple-600 font-bold uppercase">Legal Advisor</p>
+                <!-- Law Card -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div class="w-2 bg-purple-500 hidden md:block group-hover:w-3 transition-all"></div>
+                    
+                    <div class="p-6 flex-grow md:w-3/4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">⚖️</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">법학 계열 (Law)</h4>
+                                <p class="text-sm text-purple-600 font-bold uppercase tracking-wide">Legal Reasoning Advisor</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 italic mb-6 border-l-4 border-gray-100 pl-4 py-1">
+                            "방대한 법령과 판례 DB를 기반으로 논리적 법리 해석을 보조하는 파트너"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🎯 지식 주입 (Wrapping)</strong>
+                                <span class="text-gray-800 font-medium">최신 법령집 및 주요 판례 PDF 데이터베이스</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">⚡ 핵심 수행 (Core Task)</strong>
+                                <span class="text-gray-800 font-medium">계약서 독소 조항 검토 및 법적 근거 인용</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🏆 최종 결과 (Outcome)</strong>
+                                <span class="text-gray-800 font-medium">내용증명, 소장 등 법률 문서 초안</span>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-700 mb-3 font-medium">"판례에 근거하여 논리를 펼쳐라"</p>
-                    <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                        <li><strong>Wrapping:</strong> 법령 및 판례 PDF 데이터베이스(RAG) 구축</li>
-                        <li><strong>Task:</strong> 계약서 독소 조항 검토 및 법리적 근거 제시</li>
-                        <li><strong>Outcome:</strong> 내용증명 및 소장 초안 작성</li>
-                    </ul>
+
+                    <div class="p-4 md:w-1/4 bg-purple-50/30 border-l border-gray-100 flex flex-col items-center justify-center">
+                        <h5 class="text-xs font-bold text-purple-800 uppercase tracking-wider mb-2">역량 포커스</h5>
+                        <div class="chart-container-small" style="height: 160px; width: 100%;">
+                            <canvas id="chart-law"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Social Science -->
-                <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl bg-white p-2 rounded-full shadow-sm">👥</span>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">사회과학 계열</h4>
-                            <p class="text-xs text-yellow-600 font-bold uppercase">News Clipper</p>
+                <!-- Social Science Card -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div class="w-2 bg-yellow-500 hidden md:block group-hover:w-3 transition-all"></div>
+                    
+                    <div class="p-6 flex-grow md:w-3/4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-yellow-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">👥</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">사회과학 계열 (Social Science)</h4>
+                                <p class="text-sm text-yellow-600 font-bold uppercase tracking-wide">Trend Insight Clipper</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 italic mb-6 border-l-4 border-gray-100 pl-4 py-1">
+                            "소셜 미디어와 뉴스 반응을 실시간으로 읽어내어 대중의 여론을 분석"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🎯 지식 주입 (Wrapping)</strong>
+                                <span class="text-gray-800 font-medium">뉴스 댓글/SNS 타겟팅 & 감성 분석 프레임</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">⚡ 핵심 수행 (Core Task)</strong>
+                                <span class="text-gray-800 font-medium">이슈별 긍정/부정 여론 분류 및 핵심 키워드 추출</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🏆 최종 결과 (Outcome)</strong>
+                                <span class="text-gray-800 font-medium">위클리 소셜 트렌드 리포트</span>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-700 mb-3 font-medium">"대중의 반응과 여론을 읽어내라"</p>
-                    <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                        <li><strong>Wrapping:</strong> 뉴스 댓글 및 소셜 미디어로 수집 범위 타겟팅</li>
-                        <li><strong>Task:</strong> 이슈별 긍/부정 여론 분석 및 요약</li>
-                        <li><strong>Outcome:</strong> 소셜 트렌드 인사이트 리포트</li>
-                    </ul>
+
+                    <div class="p-4 md:w-1/4 bg-yellow-50/30 border-l border-gray-100 flex flex-col items-center justify-center">
+                        <h5 class="text-xs font-bold text-yellow-800 uppercase tracking-wider mb-2">역량 포커스</h5>
+                        <div class="chart-container-small" style="height: 160px; width: 100%;">
+                            <canvas id="chart-soc"></canvas>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Arts & Physical -->
-                <div class="bg-pink-50 p-6 rounded-xl border border-pink-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl bg-white p-2 rounded-full shadow-sm">🎨</span>
-                        <div>
-                            <h4 class="font-bold text-lg text-gray-900">예체능 계열</h4>
-                            <p class="text-xs text-pink-600 font-bold uppercase">Style Director</p>
+                <!-- Arts Card -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col md:flex-row group">
+                    <div class="w-2 bg-pink-500 hidden md:block group-hover:w-3 transition-all"></div>
+                    
+                    <div class="p-6 flex-grow md:w-3/4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-pink-50 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🎨</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">예체능 계열 (Arts & Physical)</h4>
+                                <p class="text-sm text-pink-600 font-bold uppercase tracking-wide">Creative Style Director</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 italic mb-6 border-l-4 border-gray-100 pl-4 py-1">
+                            "추상적인 영감을 구체적인 비주얼 스타일로 확장해주는 창작 파트너"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-gray-50 p-4 rounded-lg border border-gray-100">
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🎯 지식 주입 (Wrapping)</strong>
+                                <span class="text-gray-800 font-medium">선호 작가/화풍/색감 코드 & 디자인 레퍼런스</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">⚡ 핵심 수행 (Core Task)</strong>
+                                <span class="text-gray-800 font-medium">아이디어 → 고품질 프롬프트 변환 및 변주</span>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-500 text-xs uppercase mb-1">🏆 최종 결과 (Outcome)</strong>
+                                <span class="text-gray-800 font-medium">창작 무드보드 및 컨셉 시안</span>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-700 mb-3 font-medium">"나만의 예술적 스타일을 확장하라"</p>
-                    <ul class="text-sm text-gray-600 list-disc list-inside space-y-1">
-                        <li><strong>Wrapping:</strong> 선호하는 작가/화풍/색감 스타일 학습</li>
-                        <li><strong>Task:</strong> 추상적 아이디어를 구체적 프롬프트로 변환</li>
-                        <li><strong>Outcome:</strong> 창작 아이디어 무드보드 및 시안</li>
-                    </ul>
+
+                    <div class="p-4 md:w-1/4 bg-pink-50/30 border-l border-gray-100 flex flex-col items-center justify-center">
+                        <h5 class="text-xs font-bold text-pink-800 uppercase tracking-wider mb-2">역량 포커스</h5>
+                        <div class="chart-container-small" style="height: 160px; width: 100%;">
+                            <canvas id="chart-art"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -551,7 +735,7 @@
     <div id="view-detail-p3" class="view-section flex-grow bg-white">
         <div class="bg-blue-700 text-white py-12 px-4">
             <div class="max-w-4xl mx-auto">
-                <button onclick="App.navigate('home')" class="text-blue-200 hover:text-white mb-4 text-sm flex items-center">← 메인으로 돌아가기</button>
+                <button onclick="App.navigate('proposal')" class="text-blue-200 hover:text-white mb-4 text-sm flex items-center">← 제안서로 돌아가기</button>
                 <span class="bg-blue-900 text-blue-100 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Phase 3</span>
                 <h1 class="text-3xl font-bold mt-2">확장형 과정 (Cloud-Native LLM Ops)</h1>
                 <p class="text-blue-100 mt-2 text-lg">IT 전공자 대상, 클라우드 인프라와 TimelyGPT API를 연동한 서비스 구축</p>
@@ -620,6 +804,195 @@
         </div>
     </div>
 
+    <!-- VIEW: TEXT PROPOSAL -->
+    <div id="view-text" class="view-section flex-grow bg-gray-50">
+        <div class="bg-gray-800 text-white py-8 px-4 text-center">
+            <h1 class="text-2xl font-bold">제안서 텍스트 복사 모드</h1>
+            <p class="text-gray-400 text-sm mt-1">사업 담당자용 문서 작성 편의를 위해 텍스트만 제공합니다.</p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto py-12 px-4">
+            <button onclick="copyToClipboard()" class="mb-6 px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700 flex items-center gap-2">
+                <span>📋</span> 전체 텍스트 복사
+            </button>
+
+            <div id="proposal-content" class="doc-paper">
+                <h1 class="doc-h1">[제안서] TimelyGPT 기반 대학 AI 융합 교과 설계안</h1>
+
+                <div class="doc-box">
+                    <strong>💡 제안 요약</strong><br>
+                    본 제안은 <strong>TimelyGPT 플랫폼의 에이전트 기능</strong>과 <strong>클라우드 인프라</strong>를 결합하여, 
+                    비전공자부터 IT 전공자까지 아우르는 <strong>단계별 AI 엔지니어링 교육 과정</strong>입니다.
+                    총 3단계(기초-심화-확장)로 구성되어 있으며, 각 단계는 학생들의 디지털 리터러시 수준에 맞춰 설계되었습니다.
+                </div>
+
+                <h2 class="doc-h2">1. 사업 개요</h2>
+                <ul class="doc-ul">
+                    <li class="doc-li"><strong>사업명:</strong> 2026학년도 대학생 AI 역량 강화 교육 (AI Bridge Course)</li>
+                    <li class="doc-li"><strong>교육 목표:</strong> AI 플랫폼 활용 능력(Literacy)부터 클라우드 기반 LLM 구축 실무(Engineering)까지 단계적 인재 양성</li>
+                    <li class="doc-li"><strong>핵심 도구:</strong> TimelyGPT (AI 에이전트 플랫폼), AWS/Naver Cloud (인프라)</li>
+                    <li class="doc-li"><strong>교육 기간:</strong> 총 16주 (학기 단위 운영 권장)</li>
+                </ul>
+
+                <h2 class="doc-h2">2. 단계별 커리큘럼 구성 (총 3단계)</h2>
+
+                <h3 class="doc-h3">[1단계] 공통 기초 과정 (AI Agent Platform Mastery)</h3>
+                <p class="doc-p">전공 무관, 모든 학생이 갖춰야 할 AI 리터러시와 TimelyGPT 기초 활용 능력 배양</p>
+                <table class="doc-table">
+                    <tr>
+                        <th class="doc-th" style="width: 15%;">기간</th>
+                        <td class="doc-td">4주 (총 12시간)</td>
+                    </tr>
+                    <tr>
+                        <th class="doc-th">교육 대상</th>
+                        <td class="doc-td">전교생 (교양 필수 권장)</td>
+                    </tr>
+                    <tr>
+                        <th class="doc-th">주요 내용</th>
+                        <td class="doc-td">
+                            <ul class="doc-ul" style="margin:0; padding-left:15px;">
+                                <li><strong>플랫폼 온보딩 & AI 윤리:</strong> TimelyGPT 계정 생성, 인터페이스 학습, 할루시네이션 및 데이터 윤리 교육</li>
+                                <li><strong>프롬프트 엔지니어링 기초:</strong> AI 사고법(Role-Context-Task 구조화), Zero-shot vs Few-shot 실습</li>
+                                <li><strong>RAG (검색 증강 생성) 기초:</strong> 지식 베이스(Knowledge Base) 이해, 교재 PDF 업로드 및 질의응답</li>
+                                <li><strong>미니 프로젝트:</strong> 대학 생활 보조 에이전트(시간표, 과제 도우미) 기획 및 배포</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+                <h3 class="doc-h3">[2단계] 전공 심화 과정 (Major-Specific Agent)</h3>
+                <p class="doc-p">내 전공 지식을 학습한 전문 에이전트 구축 및 워크플로우 자동화</p>
+                <table class="doc-table">
+                    <tr>
+                        <th class="doc-th" style="width: 15%;">기간</th>
+                        <td class="doc-td">8주 (총 24시간)</td>
+                    </tr>
+                    <tr>
+                        <th class="doc-th">교육 대상</th>
+                        <td class="doc-td">전공별 재학생 (2~3학년 권장)</td>
+                    </tr>
+                    <tr>
+                        <th class="doc-th">주요 내용</th>
+                        <td class="doc-td">
+                            <ul class="doc-ul" style="margin:0; padding-left:15px;">
+                                <li><strong>도메인 지식 구조화:</strong> 전공별 핵심 데이터(논문, 판례, 실험 데이터) 수집 및 가공</li>
+                                <li><strong>심화 튜닝:</strong> Chain-of-Thought 기법 적용, 전공 특화 프롬프트(진단 로직, 코딩 컨벤션) 최적화</li>
+                                <li><strong>워크플로우 자동화:</strong> 멀티 에이전트 설계(검색+작문+평가), 업무 인계(Handoff) 로직 구현</li>
+                                <li><strong>캡스톤 프로젝트:</strong> 팀별 전공 해결사 에이전트 개발 및 실무 검증</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+                <h3 class="doc-h3">[3단계] 확장형 과정 (Cloud-Native LLM Ops)</h3>
+                <p class="doc-p">IT 전공자 대상, 클라우드 인프라와 TimelyGPT API를 연동한 서비스 구축</p>
+                <table class="doc-table">
+                    <tr>
+                        <th class="doc-th" style="width: 15%;">기간</th>
+                        <td class="doc-td">4주 (총 12시간)</td>
+                    </tr>
+                    <tr>
+                        <th class="doc-th">교육 대상</th>
+                        <td class="doc-td">IT/컴퓨터공학 전공자 및 1,2단계 우수 수료자</td>
+                    </tr>
+                    <tr>
+                        <th class="doc-th">주요 내용</th>
+                        <td class="doc-td">
+                            <ul class="doc-ul" style="margin:0; padding-left:15px;">
+                                <li><strong>Cloud Infra 구축:</strong> AWS/Naver Cloud 계정 설정, GPU 인스턴스 생성 및 환경 구성</li>
+                                <li><strong>API 연동 및 확장:</strong> TimelyGPT API Key 발급, 외부 Vector DB 클라우드 배포</li>
+                                <li><strong>sLLM 실습:</strong> 오픈소스 sLLM(Llama 3 등) 클라우드 로드 및 하이브리드 활용 연구</li>
+                                <li><strong>배포 및 서비스화:</strong> Streamlit 웹 서비스 UI 구축, API 서빙 및 최종 시연</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2 class="doc-h2">3. 계열별 활용 예시 (2단계 심화)</h2>
+                <table class="doc-table">
+                    <tr>
+                        <th class="doc-th">계열</th>
+                        <th class="doc-th">에이전트 명</th>
+                        <th class="doc-th">주요 기능 (Task)</th>
+                        <th class="doc-th">학습 데이터 (Wrapping)</th>
+                    </tr>
+                    <tr>
+                        <td class="doc-td">공학</td>
+                        <td class="doc-td">Tech Analyzer</td>
+                        <td class="doc-td">기술 스펙 비교표 자동 생성</td>
+                        <td class="doc-td">기술 DB, 학술 논문, 특허 데이터</td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td">자연과학</td>
+                        <td class="doc-td">Lab Analyst</td>
+                        <td class="doc-td">실험 데이터 전처리 및 시각화</td>
+                        <td class="doc-td">실험 변수 정의, 이상치 기준</td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td">의학/보건</td>
+                        <td class="doc-td">Patient Persona</td>
+                        <td class="doc-td">문진 및 상담 롤플레잉</td>
+                        <td class="doc-td">질환별 환자 시나리오</td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td">법학</td>
+                        <td class="doc-td">Legal Advisor</td>
+                        <td class="doc-td">계약서 검토 및 법리 근거 제시</td>
+                        <td class="doc-td">법령집, 판례 PDF</td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td">사회과학</td>
+                        <td class="doc-td">Trend Clipper</td>
+                        <td class="doc-td">여론 감성 분석 및 리포팅</td>
+                        <td class="doc-td">뉴스 댓글, SNS 데이터</td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td">예체능</td>
+                        <td class="doc-td">Style Director</td>
+                        <td class="doc-td">아이디어 무드보드 생성</td>
+                        <td class="doc-td">작가별 화풍, 디자인 레퍼런스</td>
+                    </tr>
+                </table>
+
+                <h2 class="doc-h2">4. 소요 예산 (안)</h2>
+                <p class="doc-p">* 학생 1인 기준 / 학기당 예상 비용 (변동 가능)</p>
+                <table class="doc-table">
+                    <tr>
+                        <th class="doc-th" style="width: 30%;">항목</th>
+                        <th class="doc-th" style="width: 40%;">산출 내역</th>
+                        <th class="doc-th">예상 금액 (1인)</th>
+                    </tr>
+                    <tr>
+                        <td class="doc-td"><strong>TimelyGPT 토큰비</strong></td>
+                        <td class="doc-td">200,000 Tokens (주 2회 실습 × 16주) × @2원</td>
+                        <td class="doc-td"><strong>₩ 400,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td"><strong>클라우드 인프라</strong></td>
+                        <td class="doc-td">AWS/Naver Cloud Credit (3단계 수강생 한정)</td>
+                        <td class="doc-td"><strong>₩ 100,000</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="doc-td"><strong>합계</strong></td>
+                        <td class="doc-td" colspan="2"><strong>1인당 약 40~50만원 내외</strong> (플랫폼 라이선스 별도)</td>
+                    </tr>
+                </table>
+                <p class="doc-p" style="font-size: 12px; color: #666;">※ 토큰 비용은 1토큰=2원 기준이며, 실제 사용량에 따라 달라질 수 있습니다. 플랫폼 기본 라이선스 비용은 별도 협의가 필요합니다.</p>
+
+                <h2 class="doc-h2">5. 기대 효과</h2>
+                <ul class="doc-ul">
+                    <li class="doc-li"><strong>실무형 인재 양성:</strong> 단순 AI 사용자가 아닌, AI를 도구로 자신의 전공 문제를 해결하는 'AI 엔지니어링' 역량 확보</li>
+                    <li class="doc-li"><strong>취업 경쟁력 강화:</strong> 나만의 에이전트 포트폴리오 및 클라우드 활용 경험을 통해 차별화된 스펙 마련</li>
+                    <li class="doc-li"><strong>디지털 전환 가속화:</strong> 대학 내 모든 전공 분야에 AI 활용 문화를 확산하고 교육 혁신 선도</li>
+                </ul>
+            </div>
+
+            <div class="doc-footer">
+                제안사: (주)으뜸정보기술 | 문의: 송민 이사 (sm@tbit.co.kr / 010-8485-7809)
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-gray-800 text-gray-400 py-8 text-center text-xs mt-auto">
         <p class="mb-2 font-bold text-gray-300">&copy; 2026 AI Bridge Course Design Team. All Rights Reserved.</p>
@@ -637,6 +1010,8 @@
     <!-- Controller Logic -->
     <script>
         const App = {
+            charts: {}, // To store chart instances
+
             navigate: function(viewId) {
                 // 1. View Switching
                 document.querySelectorAll('.view-section').forEach(el => {
@@ -653,6 +1028,11 @@
 
                 // 2. Navigation Highlighting
                 this.updateNav(viewId);
+
+                // 3. Render charts if on detail-p2 view
+                if(viewId === 'detail-p2') {
+                    this.renderMiniCharts();
+                }
             },
 
             updateNav: function(activeViewId) {
@@ -661,7 +1041,8 @@
                     { id: 'nav-proposal', view: 'proposal' },
                     { id: 'nav-detail-p1', view: 'detail-p1' },
                     { id: 'nav-detail-p2', view: 'detail-p2' },
-                    { id: 'nav-detail-p3', view: 'detail-p3' }
+                    { id: 'nav-detail-p3', view: 'detail-p3' },
+                    { id: 'nav-text', view: 'text' }
                 ];
 
                 navIds.forEach(item => {
@@ -674,26 +1055,117 @@
                     if(item.view === activeViewId) {
                         // --- ACTIVE STATE (Selected) ---
                         if(item.view === 'proposal') {
-                            // Proposal Active: Inverted Indigo (White text on Indigo bg) + Bold
+                            // Proposal Active: Inverted Indigo
                             cls += "font-bold text-white bg-indigo-600 border-indigo-600 shadow-md ring-2 ring-indigo-600 ring-offset-2";
+                        } else if(item.view === 'text') {
+                            // Text Active: Gray
+                            cls += "font-bold text-white bg-gray-600 border-gray-600 shadow-md ring-2 ring-gray-600 ring-offset-2 flex items-center gap-1";
                         } else {
-                            // Standard Active: Inverted Dark Gray (White text on Dark bg) + Bold
+                            // Standard Active: Inverted Dark Gray
                             cls += "font-bold text-white bg-gray-800 border-gray-800 shadow-md ring-2 ring-gray-800 ring-offset-2";
                         }
                     } else {
                         // --- INACTIVE STATE (Not Selected) ---
                         if(item.view === 'proposal') {
-                            // Proposal Inactive: Text Only (Indigo color), No Background
+                            // Proposal Inactive: Text Only (Indigo color)
                             cls += "font-bold text-indigo-600 border-transparent hover:bg-indigo-50";
+                        } else if(item.view === 'text') {
+                            // Text Inactive
+                            cls += "font-medium text-gray-500 border-transparent hover:text-gray-900 hover:bg-gray-100 flex items-center gap-1";
                         } else {
-                            // Standard Inactive: Text Only (Gray color), No Background
+                            // Standard Inactive: Text Only (Gray color)
                             cls += "font-medium text-gray-500 border-transparent hover:text-gray-900 hover:bg-gray-100";
                         }
                     }
                     el.className = cls;
                 });
+            },
+
+            // Function to render mini radar charts in Phase 2
+            renderMiniCharts: function() {
+                // Data for each major's skills: [창의성, 논리력, 데이터분석, 소통, 기술활용]
+                const majorData = {
+                    'eng': { data: [30, 80, 80, 60, 90], color: '#3B82F6' }, // Blue
+                    'sci': { data: [40, 90, 100, 50, 70], color: '#10B981' }, // Green
+                    'med': { data: [60, 50, 40, 100, 30], color: '#EF4444' }, // Red
+                    'law': { data: [30, 100, 80, 80, 40], color: '#8B5CF6' }, // Purple
+                    'soc': { data: [50, 70, 90, 70, 60], color: '#F59E0B' }, // Yellow
+                    'art': { data: [100, 40, 50, 60, 80], color: '#EC4899' }  // Pink
+                };
+
+                const labels = ['창의', '논리', '분석', '소통', '기술'];
+
+                for (const [key, value] of Object.entries(majorData)) {
+                    const ctx = document.getElementById(`chart-${key}`);
+                    if (!ctx) continue;
+
+                    // Destroy existing chart if it exists
+                    if (this.charts[key]) {
+                        this.charts[key].destroy();
+                    }
+
+                    this.charts[key] = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: '역량',
+                                data: value.data,
+                                backgroundColor: this.hexToRgba(value.color, 0.2),
+                                borderColor: value.color,
+                                borderWidth: 1.5,
+                                pointBackgroundColor: value.color,
+                                pointRadius: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    angleLines: { color: '#e2e8f0' },
+                                    grid: { color: '#e2e8f0' },
+                                    pointLabels: {
+                                        font: { size: 9, family: "'Noto Sans KR', sans-serif", weight: 'bold' },
+                                        color: '#4a5568'
+                                    },
+                                    suggestedMin: 0,
+                                    suggestedMax: 100,
+                                    ticks: { display: false, stepSize: 25 }
+                                }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    enabled: false // Disable tooltips for cleaner look
+                                }
+                            },
+                            animation: { duration: 800, easing: 'easeOutQuart' }
+                        }
+                    });
+                }
+            },
+
+            // Helper function to convert hex to rgba
+            hexToRgba: function(hex, alpha) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
             }
         };
+
+        // Copy Clipboard Function
+        function copyToClipboard() {
+            const content = document.getElementById('proposal-content').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = content;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('제안서 내용이 복사되었습니다. 문서에 붙여넣기(Ctrl+V) 하세요.');
+        }
 
         // Initialize navigation state on load
         window.addEventListener('DOMContentLoaded', () => {
